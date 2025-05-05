@@ -2,38 +2,32 @@ using UnityEngine;
 
 public class BallKicker : MonoBehaviour
 {
-    public Rigidbody ball;
-    public float lowSpeed = 5f;
-    public float mediumSpeed = 10f;
-    public float highSpeed = 15f;
+    private Rigidbody rb;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1)) // Low Speed
         {
-            ChangeSpeed(lowSpeed);
+            KickBall(5f); // Small force
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.Alpha2)) // Medium Speed
         {
-            ChangeSpeed(mediumSpeed);
+            KickBall(10f); // Moderate force
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        if (Input.GetKeyDown(KeyCode.Alpha3)) // High Speed
         {
-            ChangeSpeed(highSpeed);
+            KickBall(20f); // Strong force
         }
     }
 
-    void ChangeSpeed(float newSpeed)
+    void KickBall(float force)
     {
-        if (ball.linearVelocity.magnitude > 0.1f)
-        {
-            Vector3 currentDirection = ball.linearVelocity.normalized;
-            ball.linearVelocity = currentDirection * newSpeed;
-        }
-        else
-        {
-            // If ball is stationary, kick it forward (optional)
-            ball.linearVelocity = Vector3.back * newSpeed;
-        }
+        rb.linearVelocity = Vector3.zero; // Reset current motion
+        rb.AddForce(Vector3.forward * force, ForceMode.Impulse);
     }
 }
